@@ -3,13 +3,15 @@ import json
 import os
 import os.path
 import datetime
-
+import telegram
+import random
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
+from dotenv import load_dotenv
 from pathlib import Path
 from urllib.parse import urlsplit
 from urllib.parse import urlparse
 from dotenv import load_dotenv
-
-
 
 
 def get_extension(url):
@@ -86,6 +88,8 @@ if __name__ == "__main__":
 
     load_dotenv()
     NASA_API_TOKEN = os.environ["NASA_API_TOKEN"]
+    TELEGRAM_API_TOKEN = os.environ["TELEGRAM_API"]
+    TELEGRAM_CHANNEL_CHAT_ID = os.environ["CHAT_ID"]
 
     file_path = "images"
     ensure_dir(file_path)
@@ -99,3 +103,10 @@ if __name__ == "__main__":
 
     epic_url = 'https://api.nasa.gov/EPIC/api/natural/images?api_key=DEMO_KEY'
     get_epic_earth_photos_urls(epic_url)
+
+    bot = telegram.Bot(token=f'{TELEGRAM_API_TOKEN}')
+    print(bot.get_me())
+    apod_images = os.listdir('apod_images')
+    random_apod_image = random.choice(apod_images)
+    print(random_apod_image)
+    bot.send_document(chat_id=TELEGRAM_CHANNEL_CHAT_ID, document=open(f'apod_images/{random_apod_image}', 'rb'))
