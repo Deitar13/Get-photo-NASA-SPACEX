@@ -1,17 +1,18 @@
-import requests
+import datetime
 import json
 import os
 import os.path
-import datetime
-import telegram
 import random
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+import time
+
+import requests
+import telegram
+
 from dotenv import load_dotenv
 from pathlib import Path
-from urllib.parse import urlsplit
-from urllib.parse import urlparse
-from dotenv import load_dotenv
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
+from urllib.parse import urlsplit, urlparse
 
 
 def get_extension(url):
@@ -22,7 +23,7 @@ def get_extension(url):
 
 def fetch_apod_photos(nasa_url):
     count = 30
-    payload = {"api_key": f"{NASA_API_TOKEN}", "count": f"{count}"}
+    payload = {"api_key": f"{nasa_api_token}", "count": f"{count}"}
     response = requests.get(nasa_url, params=payload)
     response.raise_for_status()
 
@@ -87,9 +88,9 @@ def download_epic_earth_photo(epic_earth_photo_url, name_of_photo):
 if __name__ == "__main__":
 
     load_dotenv()
-    NASA_API_TOKEN = os.environ["NASA_API_TOKEN"]
-    TELEGRAM_API_TOKEN = os.environ["TELEGRAM_API"]
-    TELEGRAM_CHANNEL_CHAT_ID = os.environ["CHAT_ID"]
+    nasa_api_token = os.environ["NASA_API_TOKEN"]
+    telegram_api_token = os.environ["TELEGRAM_API"]
+    telegram_channel_chat_id = os.environ["CHAT_ID"]
 
     file_path = "images"
     ensure_dir(file_path)
@@ -104,9 +105,14 @@ if __name__ == "__main__":
     epic_url = 'https://api.nasa.gov/EPIC/api/natural/images?api_key=DEMO_KEY'
     get_epic_earth_photos_urls(epic_url)
 
-    bot = telegram.Bot(token=f'{TELEGRAM_API_TOKEN}')
-    print(bot.get_me())
-    apod_images = os.listdir('apod_images')
-    random_apod_image = random.choice(apod_images)
-    print(random_apod_image)
-    bot.send_document(chat_id=TELEGRAM_CHANNEL_CHAT_ID, document=open(f'apod_images/{random_apod_image}', 'rb'))
+    while True:
+
+        time_period = 1
+        bot = telegram.Bot(token=f'{telegram_api_token}')
+        print(bot.get_me())
+        apod_images = os.listdir('apod_images')
+        random_apod_image = random.choice(apod_images)
+
+        print(random_apod_image)
+        bot.send_document(chat_id=telegram_channel_chat_id, document=open(f'apod_images/{random_apod_image}', 'rb'))
+        time.sleep(time_period)
