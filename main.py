@@ -61,20 +61,22 @@ def fetch_spacex_last_launch(file_path):
 
 
 def get_epic_earth_photos_urls(file_path):
-    epic_url = 'https://api.nasa.gov/EPIC/api/natural/images?api_key=DEMO_KEY'
-    response = requests.get(epic_url)
+    epic_url = 'https://api.nasa.gov/EPIC/api/natural/images'
+    payload = {"api_key": f"{epic_api_key}"}
+    response = requests.get(epic_url, params=payload)
     response.raise_for_status()
 
     for photo_info in response.json():
         name_of_photo = photo_info["image"]
         date_of_photo = datetime.datetime.fromisoformat(photo_info["date"])
         formatted_date_of_photo = date_of_photo.strftime("%Y/%m/%d")
-        epic_earth_photo_url = f'https://api.nasa.gov/EPIC/archive/natural/{formatted_date_of_photo}/png/{name_of_photo}.png?api_key=DEMO_KEY'
+        epic_earth_photo_url = f'https://api.nasa.gov/EPIC/archive/natural/{formatted_date_of_photo}/png/{name_of_photo}.png'
         download_epic_earth_photo(epic_earth_photo_url, name_of_photo)
 
 
 def download_epic_earth_photo(epic_earth_photo_url, name_of_photo):
-    response = requests.get(epic_earth_photo_url)
+    payload = {"api_key": f"{epic_api_key}"}
+    response = requests.get(epic_earth_photo_url, params=payload)
     response.raise_for_status
     with open(f"{file_path}/{name_of_photo}.png", 'wb') as file:
         file.write(response.content)
@@ -84,6 +86,7 @@ if __name__ == "__main__":
     nasa_api_token = os.environ["NASA_API_TOKEN"]
     telegram_api_token = os.environ["TELEGRAM_API"]
     telegram_channel_chat_id = os.environ["CHAT_ID"]
+    epic_api_key = os.environ["EPIC_API_KEY"]
     file_path = "images"
 
     ensure_dir(file_path)
@@ -93,13 +96,13 @@ if __name__ == "__main__":
     get_epic_earth_photos_urls(file_path)
 
     while True:
-
         time_period = 86400
         bot = telegram.Bot(token=f'{telegram_api_token}')
-        print(bot.get_me())
+        #print(bot.get_me())
         images = os.listdir('images')
         random_image = random.choice(images)
 
-        print("опубликовать данную картинку:", random_image)
-        bot.send_document(chat_id=telegram_channel_chat_id, document=open(f'images/{random_image}', 'rb'))
+        #print("опубликовать данную картинку:", random_image)
+        with open(f'images/{random_image}', 'rb') as file_for_send:
+            bot.send_document(chat_id=telegram_channel_chat_id, document=file_for_send)
         time.sleep(time_period)
