@@ -33,11 +33,10 @@ def fetch_apod_photos(file_path, nasa_api_token, count_apod_photos):
 
         urls_count += 1
         extension = get_extension(item['url'])
-        photo_name = (f'apod{urls_count}{extension}')
+        name = (f'apod{urls_count}{extension}')
         response = requests.get(item['url'])
         response.raise_for_status()
-        with open(f'{file_path}/{photo_name}', 'wb') as file:
-            file.write(response.content)
+        safe_photo(name)
 
 
 def fetch_spacex_last_launch(file_path):
@@ -52,11 +51,10 @@ def fetch_spacex_last_launch(file_path):
     last_photos_links = links_list[-1]
 
     for photo_number, link in enumerate(last_photos_links, 1):
-        image_name = (f'spacex{photo_number}.jpg')
+        name = (f'spacex{photo_number}.jpg')
         response = requests.get(link)
         response.raise_for_status
-        with open(f'{file_path}/{image_name}', 'wb') as file:
-            file.write(response.content)
+        safe_photo(name)
 
 
 def get_epic_earth_photos_urls(file_path):
@@ -66,18 +64,19 @@ def get_epic_earth_photos_urls(file_path):
     response.raise_for_status()
 
     for photo_info in response.json():
-        name_of_photo = photo_info['image']
+        name = photo_info['image']
+        name = f'{name}.png'
         date_of_photo = datetime.datetime.fromisoformat(photo_info['date'])
-        formatted_date_of_photo = date_of_photo.strftime('%Y/%m/%d')
-        epic_earth_photo_url = f'https://api.nasa.gov/EPIC/archive/natural/{formatted_date_of_photo}/png/{name_of_photo}.png'
-        download_epic_earth_photo(epic_earth_photo_url, name_of_photo)
+        date = date_of_photo.strftime('%Y/%m/%d')
+        url = f'https://api.nasa.gov/EPIC/archive/natural/{date}/png/{name}'
+        payload = {'api_key': f'{epic_api_key}'}
+        response = requests.get(epic_earth_photo_url, params=payload)
+        response.raise_for_status()
+        safe_photo(name)
 
 
-def download_epic_earth_photo(epic_earth_photo_url, name_of_photo):
-    payload = {'api_key': f'{epic_api_key}'}
-    response = requests.get(epic_earth_photo_url, params=payload)
-    response.raise_for_status()
-    with open(f'{file_path}/{name_of_photo}.png', 'wb') as file:
+def safe_photo(name):
+    with open(f'{file_path}/{name}', 'wb') as file:
         file.write(response.content)
 
 
