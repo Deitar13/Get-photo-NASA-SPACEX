@@ -12,10 +12,6 @@ from pathlib import Path
 from urllib.parse import urlsplit, urlparse
 
 
-def ensure_dir(file_path):
-    Path(file_path).mkdir(parents=True, exist_ok=True)
-
-
 def get_extension(url):
     parsed_url = urlparse(url)
     path = parsed_url.path
@@ -93,7 +89,7 @@ if __name__ == '__main__':
     epic_api_key = os.environ['EPIC_API_KEY']
     file_path = 'images'
 
-    ensure_dir(file_path)
+    Path(file_path).mkdir(parents=True, exist_ok=True)
     fetch_spacex_last_launch(file_path)
     count_apod_photos = 5
     fetch_apod_photos(file_path, nasa_api_token, count_apod_photos)
