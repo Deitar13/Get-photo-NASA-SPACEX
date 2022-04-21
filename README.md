@@ -6,6 +6,7 @@ This programm download photos from NASA and SPACEX resurses and post one photos 
 ## Install
 Download and unpack ZIP file.
 
+
 ## Requirements
 
 python 3
@@ -20,4 +21,7 @@ API token NASA
 
 For post photos in Telegramm chanel require:
 Telegramm chat_id and Telegram bot token.
+
+## How it works
+
 
