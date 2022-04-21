@@ -39,7 +39,7 @@ def fetch_apod_photos(file_path, nasa_api_token, count_apod_photos):
         extension = get_extension(item['url'])
         photo_name = (f'apod{urls_count}{extension}')
         response = requests.get(item['url'])
-        response.raise_for_status
+        response.raise_for_status()
         with open(f'{file_path}/{photo_name}', 'wb') as file:
             file.write(response.content)
 
@@ -48,7 +48,7 @@ def fetch_spacex_last_launch(file_path):
     url = 'https://api.spacexdata.com/v3/launches/'
     links_list = []
     response = requests.get(url)
-    response.raise_for_status
+    response.raise_for_status()
 
     for item in response.json():
         if item['links']['flickr_images']:
@@ -80,7 +80,7 @@ def get_epic_earth_photos_urls(file_path):
 def download_epic_earth_photo(epic_earth_photo_url, name_of_photo):
     payload = {'api_key': f'{epic_api_key}'}
     response = requests.get(epic_earth_photo_url, params=payload)
-    response.raise_for_status
+    response.raise_for_status()
     with open(f'{file_path}/{name_of_photo}.png', 'wb') as file:
         file.write(response.content)
 
