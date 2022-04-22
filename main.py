@@ -26,17 +26,14 @@ def fetch_apod_photos(file_path, nasa_api_token, count_apod_photos):
     }
     response = requests.get(nasa_url, params=payload)
     response.raise_for_status()
-    urls_count = 0
 
-    for item in response.json():
+    for urls_count, item in enumerate(response.json(), 1):
         parsed_url = urlparse(item['url'])
-
-        urls_count += 1
         extension = get_extension(item['url'])
         name = (f'apod{urls_count}{extension}')
         response = requests.get(item['url'])
         response.raise_for_status()
-        safe_photo(name)
+        safe_photo(name, response)
 
 
 def fetch_spacex_last_launch(file_path):
@@ -54,7 +51,7 @@ def fetch_spacex_last_launch(file_path):
         name = (f'spacex{photo_number}.jpg')
         response = requests.get(link)
         response.raise_for_status
-        safe_photo(name)
+        safe_photo(name, response)
 
 
 def get_epic_earth_photos_urls(file_path):
@@ -70,12 +67,12 @@ def get_epic_earth_photos_urls(file_path):
         date = date_of_photo.strftime('%Y/%m/%d')
         url = f'https://api.nasa.gov/EPIC/archive/natural/{date}/png/{name}'
         payload = {'api_key': f'{epic_api_key}'}
-        response = requests.get(epic_earth_photo_url, params=payload)
+        response = requests.get(url, params=payload)
         response.raise_for_status()
-        safe_photo(name)
+        safe_photo(name, response)
 
 
-def safe_photo(name):
+def safe_photo(name, response):
     with open(f'{file_path}/{name}', 'wb') as file:
         file.write(response.content)
 
@@ -100,9 +97,9 @@ if __name__ == '__main__':
         images = os.listdir('images')
         random_image = random.choice(images)
 
-        print('Публикую картинку в телеграмм канале:', random_image)
+        print('Posting a picture on telegram chanel:', random_image)
         with open(f'images/{random_image}', 'rb') as file_for_send:
             bot.send_document(chat_id=telegram_channel_chat_id,
                               document=file_for_send)
-        print(f'Cледующая картинка будет через: {time_period} секунд')
+        print(f'Next picture will be through: {time_period} seconds')
         time.sleep(time_period)
