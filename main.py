@@ -21,8 +21,8 @@ def get_extension(url):
 def fetch_apod_photos(file_path, nasa_api_token, count_apod_photos):
     nasa_url = 'https://api.nasa.gov/planetary/apod'
     payload = {
-        'api_key': f'{nasa_api_token}',
-        'count': f'{count_apod_photos}'
+        'api_key': nasa_api_token,
+        'count': count_apod_photos
     }
     response = requests.get(nasa_url, params=payload)
     response.raise_for_status()
@@ -30,7 +30,7 @@ def fetch_apod_photos(file_path, nasa_api_token, count_apod_photos):
     for urls_count, item in enumerate(response.json(), 1):
         parsed_url = urlparse(item['url'])
         extension = get_extension(item['url'])
-        name = (f'apod{urls_count}{extension}')
+        name = f'apod{urls_count}{extension}'
         response = requests.get(item['url'])
         response.raise_for_status()
         safe_photo(name, response)
@@ -48,15 +48,15 @@ def fetch_spacex_last_launch(file_path):
     last_photos_links = links_list[-1]
 
     for photo_number, link in enumerate(last_photos_links, 1):
-        name = (f'spacex{photo_number}.jpg')
+        name = f'spacex{photo_number}.jpg'
         response = requests.get(link)
-        response.raise_for_status
+        response.raise_for_status()
         safe_photo(name, response)
 
 
 def get_epic_earth_photos_urls(file_path):
     epic_url = 'https://api.nasa.gov/EPIC/api/natural/images'
-    payload = {'api_key': f'{epic_api_key}'}
+    payload = {'api_key': epic_api_key}
     response = requests.get(epic_url, params=payload)
     response.raise_for_status()
 
@@ -84,6 +84,7 @@ if __name__ == '__main__':
     telegram_channel_chat_id = os.environ['CHAT_ID']
     epic_api_key = os.environ['EPIC_API_KEY']
     file_path = 'images'
+    time_period = os.environ['TIME_PERIOD']
 
     Path(file_path).mkdir(parents=True, exist_ok=True)
     fetch_spacex_last_launch(file_path)
@@ -101,5 +102,5 @@ if __name__ == '__main__':
         with open(f'images/{random_image}', 'rb') as file_for_send:
             bot.send_document(chat_id=telegram_channel_chat_id,
                               document=file_for_send)
-        print(f'Next picture will be through: {time_period} seconds')
+        print(f'Next picture will be posted in: {time_period} seconds')
         time.sleep(time_period)

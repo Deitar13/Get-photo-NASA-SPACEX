@@ -20,11 +20,24 @@ API token NASA
 For post photos in Telegramm chanel require:
 Telegramm chat_id and Telegram bot token.
 
+How does .env look like:
+'''
+NASA_API_TOKEN=######
+TELEGRAM_API=######
+CHAT_ID=######
+EPIC_API_KEY=######
+TIME_PERIOD=8400
+'''
+
+`TIME_PERIOD` is periodicity parameter of posting images in seconds.
+
+
+
 ## How to start
 Open Windows command line and move to directory \Get photo NASA SAPCEX
 To start programm you shuold use: `python main.py`
 example:
 ```\Get photo NASA SAPCEX>python main.py
 Posting a picture on telegram chanel: epic_1b_20220420072959.png
-Next picture will be through: 86400 seconds
+Next picture will be posted in 86400 seconds
 ```
