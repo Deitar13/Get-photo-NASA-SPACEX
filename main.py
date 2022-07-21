@@ -73,34 +73,43 @@ def get_epic_earth_photos_urls(file_path):
 
 
 def safe_photo(name, response):
-    with open(f'{file_path}/{name}', 'wb') as file:
+    with open(os.path.join(file_path, name), 'wb') as file:
         file.write(response.content)
+        print(os.path.join(file_path, name))
 
 
 if __name__ == '__main__':
     load_dotenv()
     nasa_api_token = os.environ['NASA_API_TOKEN']
     telegram_api_token = os.environ['TELEGRAM_API']
-    telegram_channel_chat_id = os.environ['CHAT_ID']
+    telegram_channel_chat_id = os.environ['TG_CHAT_ID']
     epic_api_key = os.environ['EPIC_API_KEY']
     file_path = 'images'
-    time_period = os.environ['TIME_PERIOD']
+    time_period = int(os.environ['TIME_PERIOD'])
 
     Path(file_path).mkdir(parents=True, exist_ok=True)
-    fetch_spacex_last_launch(file_path)
-    count_apod_photos = 5
-    fetch_apod_photos(file_path, nasa_api_token, count_apod_photos)
-    get_epic_earth_photos_urls(file_path)
+    print("To get SpaceX last launch photo input: 1")
+    print("To get epic Earth photos input: 2")
+    print("To get NASA APOD photos input: 3")
+    print("To post random picture on TG channel input: 4")
+    user_choice = int(input())
+    if user_choice == 1:
+        fetch_spacex_last_launch(file_path)
+    if user_choice == 2:
+        get_epic_earth_photos_urls(file_path)
+    if user_choice == 3:
+        count_apod_photos = 5
+        fetch_apod_photos(file_path, nasa_api_token, count_apod_photos)
+    if user_choice == 4:
 
-    while True:
-        time_period = 86400
-        bot = telegram.Bot(token=f'{telegram_api_token}')
-        images = os.listdir('images')
-        random_image = random.choice(images)
+        while True:
+            bot = telegram.Bot(token=f'{telegram_api_token}')
+            images = os.listdir('images')
+            random_image = random.choice(images)
 
-        print('Posting a picture on telegram chanel:', random_image)
-        with open(f'images/{random_image}', 'rb') as file_for_send:
-            bot.send_document(chat_id=telegram_channel_chat_id,
-                              document=file_for_send)
-        print(f'Next picture will be posted in: {time_period} seconds')
-        time.sleep(time_period)
+            print('Posting a picture on telegram chanel:', random_image)
+            with open(os.path.join('images', random_image), 'rb') as file_for_send:
+                bot.send_document(chat_id=telegram_channel_chat_id,
+                                  document=file_for_send)
+            print(f'Next picture will be posted in: {time_period} seconds')
+            time.sleep(time_period)
