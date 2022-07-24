@@ -12,13 +12,13 @@ python 3
 pip
 
 packages:
-'''
+```
 pip install python-dotenv==0.19.2
 pip install environ==1.0
 pip install datetime==4.4
 pip install requests==2.26.0
 pip install python-telegram-bot==13.13
-'''
+```
 
 For download photos from NASA and SPACEX resurses require:
 API token SPACE-X
@@ -28,13 +28,13 @@ For post photos in Telegramm chanel require:
 Telegramm chat_id and Telegram bot token.
 
 How does .env look like:
-'''
+```
 NASA_API_TOKEN=######
 TELEGRAM_API=######
 TG_CHAT_ID=######
 EPIC_API_KEY=######
 TIME_PERIOD=8400
-'''
+```
 
 `TIME_PERIOD` is periodicity parameter of posting images in seconds.
 
