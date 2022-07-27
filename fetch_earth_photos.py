@@ -1,9 +1,14 @@
+import argparse
 import requests
 import os
 import datetime
-import safePhoto
+#import safePhoto
 
+
+from dotenv import load_dotenv
 from safePhoto import safe_photo
+from pathlib import Path
+
 
 def get_epic_earth_photos_urls(file_path):
     epic_api_key = os.environ['EPIC_API_KEY']
@@ -22,3 +27,16 @@ def get_epic_earth_photos_urls(file_path):
         response = requests.get(url, params=payload)
         response.raise_for_status()
         safe_photo(file_path, name, response)
+
+
+if __name__ == '__main__':
+#    parser = argparse.ArgumentParser()
+#    parser.add_argument("file_path")
+#    file_path = parser.parse_args()
+#    print(file_path)
+    load_dotenv()
+    file_path = 'images'
+    Path(file_path).mkdir(parents=True, exist_ok=True)
+    get_epic_earth_photos_urls(file_path)
+
+#python fetch_earth_photos.py images
