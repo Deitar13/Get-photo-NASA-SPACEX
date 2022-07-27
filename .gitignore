@@ -127,3 +127,5 @@ cython_debug/
 
 # file with images
 /images
+
+.gitattributes
