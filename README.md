@@ -1,7 +1,7 @@
 # Get-photo-NASA-SAPCEX
 
 ## Description
-This programm download photos from NASA and SPACEX resurses and post one photos once a day in Telegramm chanel.
+This program download photos from NASA and SPACEX site and post one photos once a day in Telegramm channel.
 
 ## Install
 Download and unpack ZIP file.
@@ -20,11 +20,11 @@ pip install requests==2.26.0
 pip install python-telegram-bot==13.13
 ```
 
-For download photos from NASA and SPACEX resurses require:
+For download photos from NASA and SPACEX site require:
 API token SPACE-X
 API token NASA
 
-For post photos in Telegramm chanel require:
+For post photos in Telegramm channel require:
 Telegramm chat_id and Telegram bot token.
 
 How does .env look like:
@@ -39,43 +39,25 @@ TIME_PERIOD=8400
 `TIME_PERIOD` is periodicity parameter of posting images in seconds.
 
 
-
 ## How to start
-Open Windows command line and move to directory \Get photo NASA SAPCEX
-To start programm you shuold use: `python main.py`
+
+Run scripts:
 example:
-```\Get photo NASA SAPCEX>python main.py```
-Script examples:
 ```
-\Get photo NASA SAPCEX>python main.py
-To get SpaceX last launch photo input: 1
-To get epic Earth photos input: 2
-To get NASA APOD photos input: 3
-To post random picture on TG channel input: 4
-1
-images/spacex1.jpg
-images/spacex2.jpg
-images/spacex3.jpg
-images/spacex4.jpg
-images/spacex5.jpg
-images/spacex6.jpg
+\Get photo NASA SAPCEX>python fetch_earth_photos.py
+images\epic_1b_20220727001752.png
+images\epic_1b_20220727012319.png
+images\epic_1b_20220727022846.png
+images\epic_1b_20220727033413.png
 ```
+
 ```
-\Get photo NASA SAPCEX>python main.py
-To get SpaceX last launch photo input: 1
-To get epic Earth photos input: 2
-To get NASA APOD photos input: 3
-To post random picture on TG channel input: 4
-2
-images/epic_1b_20220720043941.png
-images/epic_1b_20220720054508.png
-images/epic_1b_20220720065035.png
-images/epic_1b_20220720075602.png
-images/epic_1b_20220720090130.png
-images/epic_1b_20220720100657.png
-images/epic_1b_20220720111224.png
-images/epic_1b_20220720121751.png
-images/epic_1b_20220720132319.png
+>python fetch_apod_photos.py
+images\apod1.jpg
+images\apod2.jpg
+images\apod3.gif
+images\apod4.jpg
+images\apod5.jpg
 ```
 
 ```
@@ -91,14 +73,21 @@ images/apod3.jpg
 images/apod4.jpg
 images/apod5.jpg
 ```
+Script fetch_spacex_photos.py can get photos from appointed start number.
+To do it you should use optional argument `launch_number`
+
+```Get photo NASA SAPCEX>python fetch_spacex_photos.py --launch_number 94
+images\spacex1.jpg
+images\spacex2.jpg
+images\spacex3.jpg
+images\spacex4.jpg
+images\spacex5.jpg
+```
+If you run script without optional argument, script will get photo from last start.
+
 
 ```
-\Get photo NASA SAPCEX>python main.py
-To get SpaceX last launch photo input: 1
-To get epic Earth photos input: 2
-To get NASA APOD photos input: 3
-To post random picture on TG channel input: 4
-4
-Posting a picture on telegram chanel: apod1.jpg
+\Get photo NASA SAPCEX>python publish_photo.py
+Posting a picture on telegram chanel: epic_1b_20220725114948.png
 Next picture will be posted in: 8400 seconds
 ```
