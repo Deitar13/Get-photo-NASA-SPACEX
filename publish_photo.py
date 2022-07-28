@@ -3,6 +3,8 @@ import telegram
 import random
 import time
 
+from dotenv import load_dotenv
+
 
 def publish_photo_in_tg():
     time_period = int(os.environ['TIME_PERIOD'])
@@ -20,3 +22,8 @@ def publish_photo_in_tg():
                               document=file_for_send)
         print(f'Next picture will be posted in: {time_period} seconds')
         time.sleep(time_period)
+
+
+if __name__ == '__main__':
+    load_dotenv()
+    publish_photo_in_tg()
