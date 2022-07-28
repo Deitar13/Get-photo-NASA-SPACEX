@@ -1,6 +1,5 @@
 import os
 import requests
-#import get_extension
 
 from dotenv import load_dotenv
 from safePhoto import safe_photo

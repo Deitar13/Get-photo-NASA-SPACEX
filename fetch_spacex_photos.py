@@ -43,7 +43,6 @@ if __name__ == '__main__':
     parser.add_argument('--launch_number')
     args = parser.parse_args()
     if args.launch_number:
-        print("работает")
         launch_number = args.launch_number
         fetch_spacex_last_launch(file_path, launch_number=args.launch_number)
     else:

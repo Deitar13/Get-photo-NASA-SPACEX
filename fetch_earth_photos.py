@@ -1,8 +1,6 @@
-import argparse
 import requests
 import os
 import datetime
-#import safePhoto
 
 
 from dotenv import load_dotenv
@@ -30,13 +28,7 @@ def get_epic_earth_photos_urls(file_path):
 
 
 if __name__ == '__main__':
-#    parser = argparse.ArgumentParser()
-#    parser.add_argument("file_path")
-#    file_path = parser.parse_args()
-#    print(file_path)
     load_dotenv()
     file_path = 'images'
     Path(file_path).mkdir(parents=True, exist_ok=True)
     get_epic_earth_photos_urls(file_path)
-
-#python fetch_earth_photos.py images
