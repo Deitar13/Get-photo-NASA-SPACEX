@@ -1,4 +1,4 @@
-# Get-photo-NASA-SAPCEX
+# Get-photo-NASA-SPACEX
 
 ## Description
 This program download photos from NASA and SPACEX site and post one photos once a day in Telegramm channel.
