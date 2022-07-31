@@ -32,7 +32,8 @@ def fetch_spacex_last_launch(folder_name, launch_number=False):
         name = f'spacex{photo_number}.jpg'
         response = requests.get(link)
         response.raise_for_status()
-        save_photo(folder_name, name, response)
+        content = response.content
+        save_photo(folder_name, name, content)
 
 
 if __name__ == '__main__':

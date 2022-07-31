@@ -23,7 +23,8 @@ def get_apod_photos(folder_name):
         name = f'apod{urls_count}{extension}'
         response = requests.get(item['url'])
         response.raise_for_status()
-        save_photo(folder_name, name, response)
+        content = response.content
+        save_photo(folder_name, name, content)
 
 
 if __name__ == '__main__':

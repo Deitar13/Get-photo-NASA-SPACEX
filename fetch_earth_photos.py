@@ -25,7 +25,8 @@ def get_epic_earth_photos_urls(folder_name):
         payload = {'api_key': f'{nasa_api_token}'}
         response = requests.get(url, params=payload)
         response.raise_for_status()
-        save_photo(folder_name, name, response)
+        content = response.content
+        save_photo(folder_name, name, content)
 
 
 if __name__ == '__main__':
