@@ -2,12 +2,12 @@ import os
 import requests
 
 from dotenv import load_dotenv
-from safePhoto import safe_photo
+from save_photos import save_photo
 from get_extension import get_extension_url
 from pathlib import Path
 
 
-def get_apod_photos(file_path):
+def get_apod_photos(folder_name):
     nasa_api_token = os.environ['NASA_API_TOKEN']
     count_apod_photos = 5
     nasa_url = 'https://api.nasa.gov/planetary/apod'
@@ -23,11 +23,11 @@ def get_apod_photos(file_path):
         name = f'apod{urls_count}{extension}'
         response = requests.get(item['url'])
         response.raise_for_status()
-        safe_photo(file_path, name, response)
+        save_photo(folder_name, name, response)
 
 
 if __name__ == '__main__':
     load_dotenv()
-    file_path = 'images'
-    Path(file_path).mkdir(parents=True, exist_ok=True)
-    get_apod_photos(file_path)
+    folder_name = 'images'
+    Path(folder_name).mkdir(parents=True, exist_ok=True)
+    get_apod_photos(folder_name)
