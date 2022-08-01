@@ -10,7 +10,6 @@ def publish_photo_in_tg():
     time_period = int(os.environ['TIME_PERIOD'])
     tg_api_token = os.environ['TG_API_TOKEN']
     tg_channel_chat_id = os.environ['TG_CHAT_ID']
-    message = 'telegram.error.NetworkError(message)'
 
     while True:
         try:
@@ -24,9 +23,10 @@ def publish_photo_in_tg():
                                   document=file)
             print(f'Next picture will be posted in: {time_period} seconds')
             time.sleep(time_period)
-        except telegram.error.NetworkError(message):
-            print('telegram.error.NetworkError(message)')
-
+        except telegram.error.NetworkError:
+            print('telegram.error.NetworkError will try again in 1 second')
+            time.sleep(1)
+            publish_photo_in_tg()
 
 
 if __name__ == '__main__':
