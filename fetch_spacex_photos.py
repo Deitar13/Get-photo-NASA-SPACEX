@@ -12,6 +12,13 @@ def fetch_spacex_last_launch(folder_name, launch_number=False):
     response = requests.get(url)
     response.raise_for_status()
 
+    launches = response.json()
+    if launch_number:
+        filtered_launches = [launch for launch in launches if launch['flight_number'] == int(launch_number)]
+    else:
+        filtered_launches = launches[-1:]
+
+
     if launch_number:
         for item in response.json():
             if item['flight_number'] == int(launch_number):

@@ -7,7 +7,12 @@ from dotenv import load_dotenv
 
 
 def publish_photo_in_tg():
-    time_period = int(os.environ['TIME_PERIOD'])
+
+    if os.environ['TIME_PERIOD']:
+        time_period = int(os.environ['TIME_PERIOD'])
+    else:
+        time_period = 14400
+
     tg_api_token = os.environ['TG_API_TOKEN']
     tg_channel_chat_id = os.environ['TG_CHAT_ID']
 
