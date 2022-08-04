@@ -15,22 +15,16 @@ def fetch_spacex_last_launch(folder_name, launch_number=False):
     launches = response.json()
     if launch_number:
         filtered_launches = [launch for launch in launches if launch['flight_number'] == int(launch_number)]
-    else:
-        filtered_launches = launches[-1:]
-
-
-    if launch_number:
-        for item in response.json():
-            if item['flight_number'] == int(launch_number):
-                if item['links']['flickr_images']:
-                    photos_links = item['links']['flickr_images']
-                else:
-                    print(f'flight_number {launch_number} have no any photos')
-                    print('try another "flight_number"')
-                    return
+        for item in filtered_launches:
+            if item['links']['flickr_images']:
+                photos_links = item['links']['flickr_images']
+            else:
+                print(f'flight_number {launch_number} have no any photos')
+                print('try another "flight_number"')
+                return
 
     else:
-        for item in response.json():
+        for item in launches:
             if item['links']['flickr_images']:
                 links.append(item['links']['flickr_images'])
         photos_links = links[-1]
