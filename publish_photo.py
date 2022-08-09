@@ -6,15 +6,7 @@ import time
 from dotenv import load_dotenv
 
 
-def publish_photo_in_tg():
-
-    if os.environ['TIME_PERIOD']:
-        time_period = int(os.environ['TIME_PERIOD'])
-    else:
-        time_period = 14400
-
-    tg_api_token = os.environ['TG_API_TOKEN']
-    tg_channel_chat_id = os.environ['TG_CHAT_ID']
+def publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period):
 
     while True:
         try:
@@ -36,4 +28,12 @@ def publish_photo_in_tg():
 
 if __name__ == '__main__':
     load_dotenv()
-    publish_photo_in_tg()
+    tg_api_token = os.environ['TG_API_TOKEN']
+    tg_channel_chat_id = os.environ['TG_CHAT_ID']
+    time_period = 'TIME_PERIOD'
+    if os.getenv(time_period):
+        time_period = int(os.getenv(time_period))
+        publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period)
+    else:
+        time_period = 14400
+        publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period)

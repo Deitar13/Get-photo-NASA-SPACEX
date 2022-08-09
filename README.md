@@ -47,9 +47,9 @@ python fetch_apod_photos.py
 ```
 
 Script fetch_spacex_photos.py can get photos from appointed start number.
-To do it you should use optional argument `launch_number`
+To do it you should use optional argument `launch_id`
 ```
-python fetch_spacex_photos.py --launch_number 94
+python fetch_spacex_photos.py --launch_id 5eb87d42ffd86e000604b384
 ```
 If you run script without optional argument, script will get photo from last start.
 

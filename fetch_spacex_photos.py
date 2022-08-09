@@ -6,35 +6,39 @@ from save_photos import save_photo
 from pathlib import Path
 
 
-def fetch_spacex_last_launch(folder_name, launch_number=False):
-    url = 'https://api.spacexdata.com/v3/launches/'
-    links = []
+def get_photos_links(url):
     response = requests.get(url)
     response.raise_for_status()
+    launch = response.json()
 
-    launches = response.json()
-    if launch_number:
-        filtered_launches = [launch for launch in launches if launch['flight_number'] == int(launch_number)]
-        for item in filtered_launches:
-            if item['links']['flickr_images']:
-                photos_links = item['links']['flickr_images']
-            else:
-                print(f'flight_number {launch_number} have no any photos')
-                print('try another "flight_number"')
-                return
+    if not launch['links']['flickr']['original']:
+        launch_date = launch['date_local']
+        print(f'{launch_date} launch have no any photos')
 
     else:
-        for item in launches:
-            if item['links']['flickr_images']:
-                links.append(item['links']['flickr_images'])
-        photos_links = links[-1]
+        photos_links = launch['links']['flickr']['original']
+        return photos_links
+
+
+def transfer_to_save(photos_links):
 
     for photo_number, link in enumerate(photos_links, 1):
         name = f'spacex{photo_number}.jpg'
-        response = requests.get(link)
-        response.raise_for_status()
-        content = response.content
-        save_photo(folder_name, name, content)
+        save_photo(folder_name, name, link)
+
+
+def fetch_spacex_last_launch(folder_name, launch_id=False):
+
+    if launch_id:
+        url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
+        photos_links = get_photos_links(url)
+        transfer_to_save(photos_links)
+
+    else:
+        url = 'https://api.spacexdata.com/v5/launches/latest'
+        photos_links = get_photos_links(url)
+        if photos_links:
+            transfer_to_save(photos_links)
 
 
 if __name__ == '__main__':
@@ -42,10 +46,12 @@ if __name__ == '__main__':
     folder_name = 'images'
     Path(folder_name).mkdir(parents=True, exist_ok=True)
     parser = argparse.ArgumentParser()
-    parser.add_argument('--launch_number')
+    parser.add_argument('--launch_id')
     args = parser.parse_args()
-    if args.launch_number:
-        launch_number = args.launch_number
-        fetch_spacex_last_launch(folder_name, launch_number=args.launch_number)
+
+    if args.launch_id:
+        launch_number = args.launch_id
+        fetch_spacex_last_launch(folder_name, launch_id=args.launch_id)
+
     else:
         fetch_spacex_last_launch(folder_name)
