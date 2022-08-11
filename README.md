@@ -28,11 +28,12 @@ How does .env look like:
 NASA_API_TOKEN=######
 TG_API_TOKEN=######
 TG_CHAT_ID=######
-EPIC_API_KEY=######
-TIME_PERIOD=
+FOLDER_NAME='images'
 ```
-
-`TIME_PERIOD` Defalult 14400 this is optional periodicity parameter of posting images in seconds.
+Default time period of posting images is 14400 seconds.
+If you neet to set periodicity parameter.
+You can add to .env file:
+`TIME_PERIOD=your_number_of_seconds` 
 
 
 ## How to start
@@ -53,6 +54,10 @@ python fetch_spacex_photos.py --launch_id 5eb87d42ffd86e000604b384
 ```
 If you run script without optional argument, script will get photo from last start.
 
+To publish photo in TG:
+```
+python publish_photo.py
+```
 result:
 ```
 \Get photo NASA SAPCEX>python publish_photo.py

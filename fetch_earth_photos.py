@@ -1,4 +1,3 @@
-import argparse
 import requests
 import os
 import datetime
@@ -25,6 +24,6 @@ def get_epic_earth_photos_urls(folder_name, nasa_api_token):
 if __name__ == '__main__':
     load_dotenv()
     nasa_api_token = os.environ['NASA_API_TOKEN']
-    folder_name = 'images'
+    folder_name = os.environ['FOLDER_NAME']
     Path(folder_name).mkdir(parents=True, exist_ok=True)
     get_epic_earth_photos_urls(folder_name, nasa_api_token)
