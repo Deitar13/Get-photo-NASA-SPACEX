@@ -28,7 +28,7 @@ def transfer_to_save(photos_links, folder_name):
         save_photo(folder_name, name, link)
 
 
-def fetch_spacex_last_launch(folder_name, launch_id='latest'):
+def fetch_spacex_last_launch(folder_name, launch_id):
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
     photos_links = get_photos_links(url)
     if photos_links:
@@ -37,13 +37,9 @@ def fetch_spacex_last_launch(folder_name, launch_id='latest'):
 
 if __name__ == '__main__':
     load_dotenv()
-    folder_name = os.environ['FOLDER_NAME']
+    folder_name = os.getenv('FOLDER_NAME', default='images')
     Path(folder_name).mkdir(parents=True, exist_ok=True)
     parser = argparse.ArgumentParser()
-    parser.add_argument('--launch_id')
+    parser.add_argument('--launch_id', default='latest')
     args = parser.parse_args()
-    if args.launch_id:
-        launch_id = args.launch_id
-        fetch_spacex_last_launch(folder_name, args.launch_id)
-    else:
-        fetch_spacex_last_launch(folder_name)
+    fetch_spacex_last_launch(folder_name, args.launch_id)

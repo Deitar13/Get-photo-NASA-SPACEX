@@ -11,11 +11,10 @@ def publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period):
     while True:
         try:
             bot = telegram.Bot(token=tg_api_token)
-            images = os.listdir(os.environ['FOLDER_NAME'])
+            folder_name = os.getenv('FOLDER_NAME', default='images')
+            images = os.listdir(folder_name)
             random_image = random.choice(images)
-
             print('Posting a picture on tg chanel:', random_image)
-            folder_name = os.environ['FOLDER_NAME']
             with open(os.path.join(folder_name, random_image), 'rb') as file:
                 bot.send_document(chat_id=tg_channel_chat_id,
                                   document=file)
@@ -24,13 +23,11 @@ def publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period):
         except telegram.error.NetworkError:
             print('telegram.error.NetworkError will try again in 1 second')
             time.sleep(1)
-            publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period)
 
 
 if __name__ == '__main__':
     load_dotenv()
     tg_api_token = os.environ['TG_API_TOKEN']
     tg_channel_chat_id = os.environ['TG_CHAT_ID']
-    time_period = 'TIME_PERIOD'
-    time_period = os.getenv(time_period, default=14400)
+    time_period = os.getenv('TIME_PERIOD', default=14400)
     publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period)

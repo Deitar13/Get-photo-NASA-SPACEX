@@ -28,12 +28,17 @@ How does .env look like:
 NASA_API_TOKEN=######
 TG_API_TOKEN=######
 TG_CHAT_ID=######
-FOLDER_NAME='images'
 ```
 Default time period of posting images is 14400 seconds.
 If you neet to set periodicity parameter.
 You can add to .env file:
 `TIME_PERIOD=your_number_of_seconds` 
+
+Default numbers of apod photos for downloading is 5, to set numbers you can add to .env file:
+`COUNT_APOD_PHOTOS=your_number`
+
+Default name of folder to downloading all photos is 'images', to set folder you can add to .env file:
+`FOLDER_NAME='your_folder'`
 
 
 ## How to start
