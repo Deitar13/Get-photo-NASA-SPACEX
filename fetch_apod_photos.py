@@ -1,3 +1,4 @@
+import argparse
 import os
 import requests
 
@@ -13,9 +14,8 @@ def get_extension_url(url):
     return os.path.splitext(path)[1]
 
 
-def get_apod_photos(folder_name, nasa_api_token):
+def get_apod_photos(folder_name, nasa_api_token, count_apod_photos):
 
-    count_apod_photos = os.getenv('COUNT_APOD_PHOTOS', default=5)
     nasa_url = 'https://api.nasa.gov/planetary/apod'
     payload = {
         'api_key': nasa_api_token,
@@ -35,4 +35,9 @@ if __name__ == '__main__':
     folder_name = os.getenv('FOLDER_NAME', default='images')
     Path(folder_name).mkdir(parents=True, exist_ok=True)
     nasa_api_token = os.environ['NASA_API_TOKEN']
-    get_apod_photos(folder_name, nasa_api_token)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--count_photos', default=5)
+    args = parser.parse_args()
+    count_apod_photos = args.count_photos
+    get_apod_photos(folder_name, nasa_api_token, count_apod_photos)

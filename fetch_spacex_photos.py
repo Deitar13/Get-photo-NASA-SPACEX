@@ -11,13 +11,12 @@ def get_photos_links(url):
     response = requests.get(url)
     response.raise_for_status()
     launch = response.json()
-
-    if not launch['links']['flickr']['original']:
+    photos_links = launch['links']['flickr']['original']
+    if not photos_links:
         launch_date = launch['date_local']
         print(f'{launch_date} launch have no any photos')
 
-    if launch['links']['flickr']['original']:
-        photos_links = launch['links']['flickr']['original']
+    if photos_links:
         return photos_links
 
 

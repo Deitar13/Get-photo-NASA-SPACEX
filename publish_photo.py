@@ -6,12 +6,11 @@ import time
 from dotenv import load_dotenv
 
 
-def publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period):
+def publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period, folder_name):
 
     while True:
         try:
             bot = telegram.Bot(token=tg_api_token)
-            folder_name = os.getenv('FOLDER_NAME', default='images')
             images = os.listdir(folder_name)
             random_image = random.choice(images)
             print('Posting a picture on tg chanel:', random_image)
@@ -30,4 +29,5 @@ if __name__ == '__main__':
     tg_api_token = os.environ['TG_API_TOKEN']
     tg_channel_chat_id = os.environ['TG_CHAT_ID']
     time_period = os.getenv('TIME_PERIOD', default=14400)
-    publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period)
+    folder_name = os.getenv('FOLDER_NAME', default='images')
+    publish_photo_in_tg(tg_api_token, tg_channel_chat_id, time_period, folder_name)

@@ -1,7 +1,7 @@
 # Get-photo-NASA-SPACEX
 
 ## Description
-This program download photos from NASA and SPACEX site and post one photos once a day in Telegramm channel.
+This program download photos from NASA and SPACEX site and post one photos once a day in Telegram channel.
 
 ## Install
 Download and unpack ZIP file.
@@ -20,8 +20,8 @@ For download photos from NASA and SPACEX site require:
 API token SPACE-X
 API token NASA
 
-For post photos in Telegramm channel require:
-Telegramm chat_id and Telegram bot token.
+For post photos in Telegram channel require:
+Telegram chat_id and Telegram bot token.
 
 How does .env look like:
 ```
@@ -51,8 +51,13 @@ python fetch_earth_photos.py
 ```
 python fetch_apod_photos.py
 ```
+Also you can set numbers of photos by the optional argument `count_photos`, default is 5.
 
-Script fetch_spacex_photos.py can get photos from appointed start number.
+```
+python fetch_apod_photos.py --count_photos 2
+```
+
+Script fetch_spacex_photos.py can get photos from appointed rocket start number.
 To do it you should use optional argument `launch_id`
 ```
 python fetch_spacex_photos.py --launch_id 5eb87d42ffd86e000604b384
